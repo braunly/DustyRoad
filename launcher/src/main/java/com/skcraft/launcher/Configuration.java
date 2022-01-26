@@ -8,7 +8,6 @@ package com.skcraft.launcher;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.skcraft.launcher.launch.runtime.JavaRuntime;
-import com.skcraft.launcher.launch.runtime.JavaRuntimeFinder;
 import lombok.Data;
 
 /**
@@ -31,11 +30,6 @@ public class Configuration {
     private int permGen = 256;
     private int windowWidth = 854;
     private int windowHeight = 480;
-    private boolean proxyEnabled = false;
-    private String proxyHost = "localhost";
-    private int proxyPort = 8080;
-    private String proxyUsername;
-    private String proxyPassword;
     private String gameKey;
     private boolean serverEnabled = false;
     private String serverHost;
@@ -49,21 +43,5 @@ public class Configuration {
     @Override
     public int hashCode() {
         return super.hashCode();
-    }
-
-    /**
-     * Backwards compatibility for old configs with the misspelling.
-     */
-    public void setWidowHeight(int height) {
-        this.windowHeight = height;
-    }
-
-    /**
-     * Backwards compatibility for old configs with jvmPaths
-     */
-    public void setJvmPath(String jvmPath) {
-        if (jvmPath != null) {
-            this.javaRuntime = JavaRuntimeFinder.getRuntimeFromPath(jvmPath);
-        }
     }
 }

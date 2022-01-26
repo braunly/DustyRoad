@@ -44,12 +44,6 @@ public class ConfigurationDialog extends JDialog {
     private final FormPanel gameSettingsPanel = new FormPanel();
     private final JSpinner widthSpinner = new JSpinner();
     private final JSpinner heightSpinner = new JSpinner();
-    private final FormPanel proxySettingsPanel = new FormPanel();
-    private final JCheckBox useProxyCheck = new JCheckBox(SharedLocale.tr("options.useProxyCheck"));
-    private final JTextField proxyHostText = new JTextField();
-    private final JSpinner proxyPortText = new JSpinner();
-    private final JTextField proxyUsernameText = new JTextField();
-    private final JPasswordField proxyPasswordText = new JPasswordField();
     private final FormPanel advancedPanel = new FormPanel();
     private final JTextField gameKeyText = new JTextField();
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
@@ -97,11 +91,6 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(permGenSpinner, "permGen");
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "windowHeight");
-        mapper.map(useProxyCheck, "proxyEnabled");
-        mapper.map(proxyHostText, "proxyHost");
-        mapper.map(proxyPortText, "proxyPort");
-        mapper.map(proxyUsernameText, "proxyUsername");
-        mapper.map(proxyPasswordText, "proxyPassword");
         mapper.map(gameKeyText, "gameKey");
 
         mapper.copyFromObject();
@@ -122,14 +111,6 @@ public class ConfigurationDialog extends JDialog {
         gameSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.windowHeight")), heightSpinner);
         SwingHelper.removeOpaqueness(gameSettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.minecraftTab"), SwingHelper.alignTabbedPane(gameSettingsPanel));
-
-        proxySettingsPanel.addRow(useProxyCheck);
-        proxySettingsPanel.addRow(new JLabel(SharedLocale.tr("options.proxyHost")), proxyHostText);
-        proxySettingsPanel.addRow(new JLabel(SharedLocale.tr("options.proxyPort")), proxyPortText);
-        proxySettingsPanel.addRow(new JLabel(SharedLocale.tr("options.proxyUsername")), proxyUsernameText);
-        proxySettingsPanel.addRow(new JLabel(SharedLocale.tr("options.proxyPassword")), proxyPasswordText);
-        SwingHelper.removeOpaqueness(proxySettingsPanel);
-        tabbedPane.addTab(SharedLocale.tr("options.proxyTab"), SwingHelper.alignTabbedPane(proxySettingsPanel));
 
         advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
         SwingHelper.removeOpaqueness(advancedPanel);

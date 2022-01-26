@@ -142,7 +142,6 @@ public class Runner implements Callable<Process>, ProgressObservable {
         addLibraries();
         addJvmArgs();
         addJarArgs();
-        addProxyArgs();
         addServerArgs();
         addPlatformArgs();
         addLegacyArgs();
@@ -308,34 +307,6 @@ public class Runner implements Callable<Process>, ProgressObservable {
             if (arg.shouldApply(environment, featureList)) {
                 for (String subArg : arg.getValues()) {
                     args.add(substitutor.replace(subArg));
-                }
-            }
-        }
-    }
-
-    /**
-     * Add proxy arguments.
-     */
-    private void addProxyArgs() {
-        List<String> args = builder.getArgs();
-
-        if (config.isProxyEnabled()) {
-            String host = config.getProxyHost();
-            int port = config.getProxyPort();
-            String username = config.getProxyUsername();
-            String password = config.getProxyPassword();
-
-            if (!Strings.isNullOrEmpty(host) && port > 0 && port < 65535) {
-                args.add("--proxyHost");
-                args.add(config.getProxyHost());
-                args.add("--proxyPort");
-                args.add(String.valueOf(port));
-
-                if (!Strings.isNullOrEmpty(username)) {
-                    builder.getArgs().add("--proxyUser");
-                    builder.getArgs().add(username);
-                    builder.getArgs().add("--proxyPass");
-                    builder.getArgs().add(password);
                 }
             }
         }
