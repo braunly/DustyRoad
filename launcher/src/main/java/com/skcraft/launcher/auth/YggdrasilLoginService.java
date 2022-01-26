@@ -7,9 +7,6 @@
 package com.skcraft.launcher.auth;
 
 import com.fasterxml.jackson.annotation.*;
-import com.skcraft.launcher.auth.microsoft.MinecraftServicesAuthorizer;
-import com.skcraft.launcher.auth.microsoft.model.McProfileResponse;
-import com.skcraft.launcher.auth.skin.MinecraftSkinService;
 import com.skcraft.launcher.util.HttpRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

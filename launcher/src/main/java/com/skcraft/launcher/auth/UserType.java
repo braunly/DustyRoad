@@ -18,11 +18,7 @@ public enum UserType {
     /**
      * Mojang accounts login with an email address.
      */
-    MOJANG,
-    /**
-     * Microsoft accounts login via OAuth.
-     */
-    MICROSOFT;
+    MOJANG;
 
     /**
      * Return a lowercase version of the enum type.

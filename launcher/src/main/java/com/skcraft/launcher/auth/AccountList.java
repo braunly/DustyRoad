@@ -8,7 +8,6 @@ import com.skcraft.launcher.persistence.Scrambled;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang.RandomStringUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;

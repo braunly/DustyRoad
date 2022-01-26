@@ -2,10 +2,8 @@ package com.skcraft.launcher.dialog;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.skcraft.concurrency.ObservableFuture;
 import com.skcraft.concurrency.ProgressObservable;
-import com.skcraft.concurrency.SettableProgress;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.auth.*;
 import com.skcraft.launcher.persistence.Persistence;
@@ -24,7 +22,7 @@ public class AccountSelectDialog extends JDialog {
 	private final JButton loginButton = new JButton(SharedLocale.tr("accounts.play"));
 	private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
 	private final JButton addMojangButton = new JButton(SharedLocale.tr("accounts.addMojang"));
-	private final JButton addMicrosoftButton = new JButton(SharedLocale.tr("accounts.addMicrosoft"));
+//	private final JButton addMicrosoftButton = new JButton(SharedLocale.tr("accounts.addMicrosoft"));
 	private final JButton removeSelected = new JButton(SharedLocale.tr("accounts.removeSelected"));
 	private final JButton offlineButton = new JButton(SharedLocale.tr("login.playOffline"));
 	private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
@@ -74,10 +72,8 @@ public class AccountSelectDialog extends JDialog {
 		//Login Buttons
 		JPanel loginButtonsRow = new JPanel(new BorderLayout(0, 5));
 		addMojangButton.setAlignmentX(CENTER_ALIGNMENT);
-		addMicrosoftButton.setAlignmentX(CENTER_ALIGNMENT);
 		removeSelected.setAlignmentX(CENTER_ALIGNMENT);
 		loginButtonsRow.add(addMojangButton, BorderLayout.NORTH);
-		loginButtonsRow.add(addMicrosoftButton, BorderLayout.CENTER);
 		loginButtonsRow.add(removeSelected, BorderLayout.SOUTH);
 		loginButtonsRow.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
@@ -101,8 +97,6 @@ public class AccountSelectDialog extends JDialog {
 				setResult(newSession);
 			}
 		});
-
-		addMicrosoftButton.addActionListener(ev -> attemptMicrosoftLogin());
 
 		offlineButton.addActionListener(ev ->
 				setResult(new OfflineSession(launcher.getProperties().getProperty("offlinePlayerName"))));
@@ -143,27 +137,6 @@ public class AccountSelectDialog extends JDialog {
 	private void setResult(Session result) {
 		this.selected = result;
 		dispose();
-	}
-
-	private void attemptMicrosoftLogin() {
-		String status = SharedLocale.tr("login.microsoft.seeBrowser");
-		SettableProgress progress = new SettableProgress(status, -1);
-
-		ListenableFuture<?> future = launcher.getExecutor().submit(() -> {
-			Session newSession = launcher.getMicrosoftLogin().login(() ->
-					progress.set(SharedLocale.tr("login.loggingInStatus"), -1));
-
-			if (newSession != null) {
-				launcher.getAccounts().update(newSession.toSavedSession());
-				setResult(newSession);
-			}
-
-			return null;
-		});
-
-		ProgressDialog.showProgress(this, future, progress,
-				SharedLocale.tr("login.loggingInTitle"), status);
-		SwingHelper.addErrorDialogCallback(this, future);
 	}
 
 	private void attemptExistingLogin(SavedSession session) {
