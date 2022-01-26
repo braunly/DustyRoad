@@ -120,7 +120,7 @@ public class HttpRequest implements Closeable, ProgressObservable {
         }
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Java) SKMCLauncher");
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Java) YabKoDustyRoad");
         conn.setInstanceFollowRedirects(false);
 
         if (body != null) {
