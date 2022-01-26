@@ -28,10 +28,10 @@ import static com.skcraft.launcher.bootstrap.SharedLocale.tr;
 @Log
 public class Bootstrap {
 
+    private static final int LEAF_VERSION = 1;
     private static final int BOOTSTRAP_VERSION = 1;
 
     @Getter private final File baseDir;
-    @Getter private final boolean portable;
     @Getter private final File binariesDir;
     @Getter private final Properties properties;
     private final String[] originalArgs;
@@ -40,9 +40,7 @@ public class Bootstrap {
         SimpleLogFormatter.configureGlobalLogger();
         SharedLocale.loadBundle("com.skcraft.launcher.lang.Bootstrap", Locale.getDefault());
 
-        boolean portable = isPortableMode();
-
-        Bootstrap bootstrap = new Bootstrap(portable, args);
+        Bootstrap bootstrap = new Bootstrap(args);
         try {
             bootstrap.cleanup();
             bootstrap.launch();
@@ -53,13 +51,12 @@ public class Bootstrap {
         }
     }
 
-    public Bootstrap(boolean portable, String[] args) throws IOException {
+    public Bootstrap(String[] args) throws IOException {
         this.properties = BootstrapUtils.loadProperties(Bootstrap.class, "bootstrap.properties");
 
-        File baseDir = portable ? new File(".") : getUserLauncherDir();
+        File baseDir = getUserLauncherDir();
 
         this.baseDir = baseDir;
-        this.portable = portable;
         this.binariesDir = new File(baseDir, "launcher");
         this.originalArgs = args;
 
@@ -146,20 +143,14 @@ public class Bootstrap {
         Method method = clazz.getDeclaredMethod("main", String[].class);
         String[] launcherArgs;
 
-        if (portable) {
-            launcherArgs = new String[] {
-                    "--portable",
-                    "--dir",
-                    baseDir.getAbsolutePath(),
-                    "--bootstrap-version",
-                    String.valueOf(BOOTSTRAP_VERSION) };
-        } else {
-            launcherArgs = new String[] {
-                    "--dir",
-                    baseDir.getAbsolutePath(),
-                    "--bootstrap-version",
-                    String.valueOf(BOOTSTRAP_VERSION)  };
-        }
+        launcherArgs = new String[] {
+            "--dir",
+            baseDir.getAbsolutePath(),
+            "--bootstrap-version",
+            String.valueOf(BOOTSTRAP_VERSION),
+            "--leaf-version",
+            String.valueOf(LEAF_VERSION)
+        };
 
         String[] args = new String[originalArgs.length + launcherArgs.length];
         System.arraycopy(launcherArgs, 0, args, 0, launcherArgs.length);
@@ -198,10 +189,4 @@ public class Bootstrap {
             return new File(System.getProperty("user.home"), getProperties().getProperty("homeFolder"));
         }
     }
-
-    private static boolean isPortableMode() {
-        return new File("portable.txt").exists();
-    }
-
-
 }
