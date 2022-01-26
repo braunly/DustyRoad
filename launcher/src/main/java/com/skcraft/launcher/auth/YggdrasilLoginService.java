@@ -57,20 +57,10 @@ public class YggdrasilLoginService implements LoginService {
             throw new AuthenticationException(error.getErrorMessage(), true);
         } else {
             AuthenticateResponse response = req.returnContent().asJson(AuthenticateResponse.class);
-            Profile profile = response.getSelectedProfile();
 
-            if (profile == null) return null; // Minecraft not owned
+            // Minecraft not owned
 
-            if (previous != null && previous.getAvatarImage() != null) {
-                profile.setAvatarImage(previous.getAvatarImage());
-            } else {
-                McProfileResponse skinProfile = MinecraftServicesAuthorizer
-                        .getUserProfile("Bearer " + response.getAccessToken());
-
-                profile.setAvatarImage(MinecraftSkinService.fetchSkinHead(skinProfile));
-            }
-
-            return profile;
+            return response.getSelectedProfile();
         }
     }
 

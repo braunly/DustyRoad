@@ -15,7 +15,6 @@ public class SavedSession {
 	private String username;
 	private String accessToken;
 	private String refreshToken;
-	private byte[] avatarImage;
 
 	@Override
 	public boolean equals(Object o) {

@@ -58,13 +58,6 @@ public interface Session {
     UserType getUserType();
 
     /**
-     * Get the user's avatar
-     *
-     * @return User's avatar as a base64 string.
-     */
-    byte[] getAvatarImage();
-
-    /**
      * Return true if the user is in an online session.
      *
      * @return true if online
@@ -82,7 +75,6 @@ public interface Session {
         savedSession.setUsername(getName());
         savedSession.setUuid(getUuid());
         savedSession.setAccessToken(getAccessToken());
-        savedSession.setAvatarImage(getAvatarImage());
 
         return savedSession;
     }

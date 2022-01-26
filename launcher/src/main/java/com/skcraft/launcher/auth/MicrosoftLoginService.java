@@ -99,14 +99,7 @@ public class MicrosoftLoginService implements LoginService {
 		McAuthResponse auth = MinecraftServicesAuthorizer.authorizeWithMinecraft(xboxAuthorization);
 		McProfileResponse profile = MinecraftServicesAuthorizer.getUserProfile(auth);
 
-		Profile session = new Profile(auth, profile);
-		if (previous != null && previous.getAvatarImage() != null) {
-			session.setAvatarImage(previous.getAvatarImage());
-		} else {
-			session.setAvatarImage(MinecraftSkinService.fetchSkinHead(profile));
-		}
-
-		return session;
+		return new Profile(auth, profile);
 	}
 
 	@Data
@@ -156,7 +149,6 @@ public class MicrosoftLoginService implements LoginService {
 			savedSession.setUuid(getUuid());
 			savedSession.setAccessToken(getAccessToken());
 			savedSession.setRefreshToken(getRefreshToken());
-			savedSession.setAvatarImage(getAvatarImage());
 
 			return savedSession;
 		}
