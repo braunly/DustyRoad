@@ -44,8 +44,6 @@ public class ConfigurationDialog extends JDialog {
     private final FormPanel gameSettingsPanel = new FormPanel();
     private final JSpinner widthSpinner = new JSpinner();
     private final JSpinner heightSpinner = new JSpinner();
-    private final FormPanel advancedPanel = new FormPanel();
-    private final JTextField gameKeyText = new JTextField();
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
     private final JButton okButton = new JButton(SharedLocale.tr("button.ok"));
     private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
@@ -91,7 +89,6 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(permGenSpinner, "permGen");
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "windowHeight");
-        mapper.map(gameKeyText, "gameKey");
 
         mapper.copyFromObject();
     }
@@ -111,10 +108,6 @@ public class ConfigurationDialog extends JDialog {
         gameSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.windowHeight")), heightSpinner);
         SwingHelper.removeOpaqueness(gameSettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.minecraftTab"), SwingHelper.alignTabbedPane(gameSettingsPanel));
-
-        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
-        SwingHelper.removeOpaqueness(advancedPanel);
-        tabbedPane.addTab(SharedLocale.tr("options.advancedTab"), SwingHelper.alignTabbedPane(advancedPanel));
 
         buttonsPanel.addElement(logButton);
         buttonsPanel.addElement(aboutButton);

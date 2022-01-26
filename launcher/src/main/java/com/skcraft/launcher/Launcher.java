@@ -408,6 +408,7 @@ public final class Launcher {
         new JCommander(options, args);
 
         Integer bsVersion = options.getBootstrapVersion();
+        Integer lfVersion = options.getLeafVersion() != null ? options.getLeafVersion() : 0;
         log.info(bsVersion != null ? "Bootstrap version " + bsVersion + " detected" : "Not bootstrapped");
 
         File dir = options.getDir();
@@ -418,8 +419,10 @@ public final class Launcher {
             dir = new File("").getAbsoluteFile();
             log.info("Using current directory " + dir.getAbsolutePath());
         }
+        Launcher launcher = new Launcher(dir);
+        launcher.getConfig().setGameKey(Integer.toString(lfVersion));
 
-        return new Launcher(dir);
+        return launcher;
     }
 
     /**
