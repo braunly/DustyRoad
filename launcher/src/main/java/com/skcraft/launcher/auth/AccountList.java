@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Persisted account list
@@ -25,7 +26,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountList implements ListModel<SavedSession> {
 	private List<SavedSession> accounts = Lists.newArrayList();
-	private String clientId = RandomStringUtils.randomAlphanumeric(24);
+	private String clientId = UUID.randomUUID().toString();
 
 	@JsonIgnore private final ListListenerReducer listeners = new ListListenerReducer();
 
