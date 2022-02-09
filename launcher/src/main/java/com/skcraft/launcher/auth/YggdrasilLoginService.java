@@ -24,6 +24,7 @@ import java.util.Map;
 public class YggdrasilLoginService implements LoginService {
 
     private final URL authUrl;
+    private final URL refreshUrl;
     private final String clientId;
 
     public Session login(String id, String password)
@@ -38,7 +39,7 @@ public class YggdrasilLoginService implements LoginService {
             throws IOException, InterruptedException, AuthenticationException {
         RefreshPayload payload = new RefreshPayload(savedSession.getAccessToken(), clientId);
 
-        return call(new URL(this.authUrl, "/refresh"), payload, savedSession);
+        return call(this.refreshUrl, payload, savedSession);
     }
 
     private Session call(URL url, Object payload, SavedSession previous)

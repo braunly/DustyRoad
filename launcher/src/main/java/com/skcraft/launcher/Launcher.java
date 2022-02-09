@@ -163,7 +163,11 @@ public final class Launcher {
      * @return the Yggdrasil (legacy) login service
      */
     public YggdrasilLoginService getYggdrasil() {
-        return new YggdrasilLoginService(HttpRequest.url(getProperties().getProperty("yggdrasilAuthUrl")), accounts.getClientId());
+        return new YggdrasilLoginService(
+                HttpRequest.url(getProperties().getProperty("yggdrasilAuthUrl")),
+                HttpRequest.url(getProperties().getProperty("yggdrasilRefreshUrl")),
+                accounts.getClientId()
+        );
     }
 
     public LoginService getLoginService(UserType type) {
