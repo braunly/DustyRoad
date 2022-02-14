@@ -40,7 +40,6 @@ public class ConfigurationDialog extends JDialog {
     private final JTextField jvmArgsText = new JTextField();
     private final JSpinner minMemorySpinner = new JSpinner();
     private final JSpinner maxMemorySpinner = new JSpinner();
-    private final JSpinner permGenSpinner = new JSpinner();
     private final FormPanel gameSettingsPanel = new FormPanel();
     private final JSpinner widthSpinner = new JSpinner();
     private final JSpinner heightSpinner = new JSpinner();
@@ -86,7 +85,6 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(jvmArgsText, "jvmArgs");
         mapper.map(minMemorySpinner, "minMemory");
         mapper.map(maxMemorySpinner, "maxMemory");
-        mapper.map(permGenSpinner, "permGen");
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "windowHeight");
 
@@ -100,7 +98,6 @@ public class ConfigurationDialog extends JDialog {
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.64BitJavaWarning")));
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.minMemory")), minMemorySpinner);
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.maxMemory")), maxMemorySpinner);
-        javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.permGen")), permGenSpinner);
         SwingHelper.removeOpaqueness(javaSettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.javaTab"), SwingHelper.alignTabbedPane(javaSettingsPanel));
 

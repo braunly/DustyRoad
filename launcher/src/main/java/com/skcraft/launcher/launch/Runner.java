@@ -225,8 +225,6 @@ public class Runner implements Callable<Process>, ProgressObservable {
                 .map(MemorySettings::getMaxMemory)
                 .orElse(config.getMaxMemory());
 
-        int permGen = config.getPermGen();
-
         if (minMemory <= 0) {
             minMemory = 1024;
         }
@@ -235,21 +233,12 @@ public class Runner implements Callable<Process>, ProgressObservable {
             maxMemory = 1024;
         }
 
-        if (permGen <= 0) {
-            permGen = 128;
-        }
-
-        if (permGen <= 64) {
-            permGen = 64;
-        }
-
         if (minMemory > maxMemory) {
             maxMemory = minMemory;
         }
 
         builder.setMinMemory(minMemory);
         builder.setMaxMemory(maxMemory);
-        builder.setPermGen(permGen);
 
         JavaRuntime selectedRuntime = Optional.ofNullable(instance.getSettings().getRuntime())
                 .orElseGet(() -> Optional.ofNullable(versionManifest.getJavaVersion())
