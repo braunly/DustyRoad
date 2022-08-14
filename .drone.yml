@@ -1,0 +1,47 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: build launcher
+  image: eclipse-temurin:11
+  commands:
+  - ./gradlew build
+  - export version=$(grep -oP "version = '\K[0-9\.]*" build.gradle)
+  - cp launcher-fancy/build/libs/launcher-fancy-${version}.jar $${YABKO_ROOT}launcher/versions/
+  - echo '{"version":"${version}","url":"${LAUNCHER_URL}launcher-fancy-${version}.jar"}' > $${YABKO_ROOT}launcher/latest.json
+  environment:
+    YABKO_ROOT:
+      from_secret: yabko_root
+    LAUNCHER_URL:
+      from_secret: launcher_url
+
+- name: build modpack-builder docker image
+  image: docker:dind
+  volumes:
+  - name: dockersock
+    path: /var/run
+  commands:
+  - sleep 3
+  - export version=$(grep -oP "version = '\K[0-9\.]*" build.gradle)
+  - cp launcher-builder/build/libs/launcher-builder-${version}.jar modpack-builder.jar
+  - docker build -t modpack-builder:latest -f builder_Dockerfile .
+
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
+
+volumes:
+- name: dockersock
+  temp: {}
+
+trigger:
+  branch:
+  - master
+  event:
+  - push
