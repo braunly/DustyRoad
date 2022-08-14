@@ -6,14 +6,16 @@ name: default
 steps:
 - name: build launcher
   image: eclipse-temurin:11
+  volumes:
+  - name: yabko_root
+    path: /tmp/yabko_root
   commands:
   - ./gradlew build
-  - export version=$(grep -oP "version = '\K[0-9\.]*" build.gradle)
-  - cp launcher-fancy/build/libs/launcher-fancy-${version}.jar $${YABKO_ROOT}launcher/versions/
-  - echo '{"version":"${version}","url":"${LAUNCHER_URL}launcher-fancy-${version}.jar"}' > $${YABKO_ROOT}launcher/latest.json
+  - export version=$$(grep -oP "version = '\K[0-9\.]*" build.gradle)
+  - cp launcher-builder/build/libs/launcher-builder-$${version}.jar modpack-builder.jar
+  - cp launcher-fancy/build/libs/launcher-fancy-$${version}.jar /tmp/yabko_root/launcher/versions/
+  - echo '{"version":"$${version}","url":"$${LAUNCHER_URL}launcher-fancy-$${version}.jar"}' > /tmp/yabko_root/launcher/latest.json
   environment:
-    YABKO_ROOT:
-      from_secret: yabko_root
     LAUNCHER_URL:
       from_secret: launcher_url
 
@@ -24,8 +26,6 @@ steps:
     path: /var/run
   commands:
   - sleep 3
-  - export version=$(grep -oP "version = '\K[0-9\.]*" build.gradle)
-  - cp launcher-builder/build/libs/launcher-builder-${version}.jar modpack-builder.jar
   - docker build -t modpack-builder:latest -f builder_Dockerfile .
 
 services:
@@ -39,6 +39,9 @@ services:
 volumes:
 - name: dockersock
   temp: {}
+- name: yabko_root
+  host:
+    path: /data/yabko_root/www
 
 trigger:
   branch:
