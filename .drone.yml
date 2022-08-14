@@ -14,7 +14,7 @@ steps:
   - export version=$$(grep -oP "version = '\K[0-9\.]*" build.gradle)
   - cp launcher-builder/build/libs/launcher-builder-$${version}.jar modpack-builder.jar
   - cp launcher-fancy/build/libs/launcher-fancy-$${version}.jar /tmp/yabko_root/launcher/versions/
-  - echo '{"version":"${version}","url":"${LAUNCHER_URL}launcher-fancy-$${version}.jar"}' > /tmp/yabko_root/launcher/latest.json
+  - echo "{\"version\":\"$${version}\",\"url\":\"$${LAUNCHER_URL}launcher-fancy-$${version}.jar\"}" > /tmp/yabko_root/launcher/latest.json
   environment:
     LAUNCHER_URL:
       from_secret: launcher_url
