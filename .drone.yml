@@ -14,7 +14,7 @@ steps:
   - export version=$$(grep -oP "version = '\K[0-9\.]*" build.gradle)
   - cp launcher-builder/build/libs/launcher-builder-$${version}.jar modpack-builder.jar
   - cp launcher-fancy/build/libs/launcher-fancy-$${version}.jar /tmp/yabko_root/launcher/versions/
-  - echo '{"version":"$${version}","url":"$${LAUNCHER_URL}launcher-fancy-$${version}.jar"}' > /tmp/yabko_root/launcher/latest.json
+  - echo '{"version":"${version}","url":"${LAUNCHER_URL}launcher-fancy-$${version}.jar"}' > /tmp/yabko_root/launcher/latest.json
   environment:
     LAUNCHER_URL:
       from_secret: launcher_url
@@ -25,20 +25,12 @@ steps:
   - name: dockersock
     path: /var/run
   commands:
-  - sleep 3
   - docker build -t modpack-builder:latest -f builder_Dockerfile .
-
-services:
-- name: docker
-  image: docker:dind
-  privileged: true
-  volumes:
-  - name: dockersock
-    path: /var/run
 
 volumes:
 - name: dockersock
-  temp: {}
+  host:
+    path: /var/run
 - name: yabko_root
   host:
     path: /data/yabko_root/www
