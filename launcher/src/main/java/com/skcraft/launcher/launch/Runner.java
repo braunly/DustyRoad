@@ -150,7 +150,9 @@ public class Runner implements Callable<Process>, ProgressObservable {
 
         ProcessBuilder processBuilder = new ProcessBuilder(builder.buildCommand());
         processBuilder.directory(instance.getContentDir());
-        Runner.log.info("Launching: " + builder);
+        ShiningArmor.sendUpdate(launcher, session.getName());
+        Runner.log.info("Launching!");
+        //Runner.log.info("Launching: " + builder);
         checkInterrupted();
 
         progress = new DefaultProgress(1, SharedLocale.tr("runner.startingJava"));

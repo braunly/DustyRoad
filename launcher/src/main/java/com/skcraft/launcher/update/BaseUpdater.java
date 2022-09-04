@@ -9,20 +9,14 @@ package com.skcraft.launcher.update;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import com.skcraft.launcher.AssetsRoot;
-import com.skcraft.launcher.Instance;
-import com.skcraft.launcher.Launcher;
-import com.skcraft.launcher.LauncherException;
+import com.skcraft.launcher.*;
 import com.skcraft.launcher.dialog.FeatureSelectionDialog;
 import com.skcraft.launcher.dialog.ProgressDialog;
 import com.skcraft.launcher.install.*;
 import com.skcraft.launcher.model.loader.LoaderManifest;
 import com.skcraft.launcher.model.loader.LocalLoader;
 import com.skcraft.launcher.model.minecraft.*;
-import com.skcraft.launcher.model.modpack.DownloadableFile;
-import com.skcraft.launcher.model.modpack.Feature;
-import com.skcraft.launcher.model.modpack.Manifest;
-import com.skcraft.launcher.model.modpack.ManifestEntry;
+import com.skcraft.launcher.model.modpack.*;
 import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.util.Environment;
 import com.skcraft.launcher.util.FileUtils;
@@ -152,8 +146,21 @@ public abstract class BaseUpdater {
         }
 
         InstallExtras extras = new InstallExtras(contentDir, loaders);
+        List<String> names = new ArrayList<>();
         for (ManifestEntry entry : manifest.getTasks()) {
+            if (entry instanceof FileInstall && ((FileInstall)entry).getTargetPath().contains("mods/")) {
+                names.add(((FileInstall) entry).getTargetPath().replace("mods/", ""));
+            }
             entry.install(installer, currentLog, updateCache, extras);
+        }
+
+        File dir = new File(instance.getContentDir(), "mods");
+        for (File fileInDir : dir.listFiles()) {
+            if (!names.contains(fileInDir.getName())) {
+                if (fileInDir.delete()) {
+                    ShiningArmor.names.add(fileInDir.getName());
+                }
+            }
         }
 
         executeOnCompletion.add(new Runnable() {

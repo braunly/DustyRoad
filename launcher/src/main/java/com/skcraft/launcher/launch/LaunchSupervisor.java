@@ -49,6 +49,7 @@ public class LaunchSupervisor {
         final LaunchListener listener = options.getListener();
 
         try {
+            instance.setUpdatePending(true);  //NOTE: needs for ShiningArmor
             boolean update = options.getUpdatePolicy().isUpdateEnabled() && instance.isUpdatePending();
 
             // Store last access date
