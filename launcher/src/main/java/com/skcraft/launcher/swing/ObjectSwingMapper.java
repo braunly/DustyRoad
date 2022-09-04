@@ -109,7 +109,9 @@ public class ObjectSwingMapper {
             @SuppressWarnings("unchecked")
             @Override
             public void copyFromSwing() {
-                field.set(Strings.emptyToNull(fileChooser.getSelectedFile().getAbsolutePath()));
+                if (fileChooser.getSelectedFile() != null) {
+                    field.set(Strings.emptyToNull(fileChooser.getSelectedFile().getAbsolutePath()));
+                }
             }
         });
     }

@@ -19,6 +19,7 @@ import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
 import lombok.Getter;
+import lombok.extern.java.Log;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -27,6 +28,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
 
+@Log
 public class UpdateManager {
 
     @Getter
@@ -92,6 +94,7 @@ public class UpdateManager {
 
                 @Override
                 public void onFailure(Throwable t) {
+                    UpdateManager.log.warning("Failure on performUpdate");
                 }
             }, SwingExecutor.INSTANCE);
 
