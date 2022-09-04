@@ -151,7 +151,11 @@ public class LauncherFrame extends JFrame {
         launchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                launch();
+                if (launcher.getUpdateManager().getPendingUpdate()) {
+                    launcher.getUpdateManager().performUpdate(LauncherFrame.this);
+                } else {
+                    launch();
+                }
             }
         });
 
