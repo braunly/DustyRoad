@@ -34,6 +34,8 @@ public class Configuration {
     private String serverHost;
     private int serverPort = 25565;
 
+    private String baseDir;
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

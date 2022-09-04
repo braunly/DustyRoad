@@ -92,12 +92,12 @@ public final class Launcher {
     public Launcher(@NonNull File baseDir, @NonNull File configDir) throws IOException {
         SharedLocale.loadBundle("com.skcraft.launcher.lang.Launcher", Locale.getDefault());
 
-        this.baseDir = baseDir.getAbsoluteFile();
         this.properties = LauncherUtils.loadProperties(Launcher.class, "launcher.properties", "com.skcraft.launcher.propertiesFile");
         this.instances = new InstanceList(this);
-        this.assets = new AssetsRoot(new File(baseDir, "assets"));
         this.config = Persistence.load(new File(configDir, "config.json"), Configuration.class);
         this.accounts = Persistence.load(new File(configDir, "accounts.dat"), AccountList.class);
+        this.baseDir = this.config.getBaseDir() != null ? new File(this.config.getBaseDir()).getAbsoluteFile() : baseDir.getAbsoluteFile();
+        this.assets = new AssetsRoot(new File(this.baseDir, "assets"));
 
         setDefaultConfig();
 

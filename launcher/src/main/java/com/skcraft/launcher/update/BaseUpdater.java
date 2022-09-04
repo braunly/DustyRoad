@@ -155,10 +155,12 @@ public abstract class BaseUpdater {
         }
 
         File dir = new File(instance.getContentDir(), "mods");
-        for (File fileInDir : dir.listFiles()) {
-            if (!names.contains(fileInDir.getName())) {
-                if (fileInDir.delete()) {
-                    ShiningArmor.names.add(fileInDir.getName());
+        if (dir.exists()) {
+            for (File fileInDir : Objects.requireNonNull(dir.listFiles())) {
+                if (!names.contains(fileInDir.getName())) {
+                    if (fileInDir.delete()) {
+                        ShiningArmor.names.add(fileInDir.getName());
+                    }
                 }
             }
         }

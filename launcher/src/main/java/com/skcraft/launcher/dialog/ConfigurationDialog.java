@@ -40,6 +40,9 @@ public class ConfigurationDialog extends JDialog {
     private final JTextField jvmArgsText = new JTextField();
     private final JSpinner minMemorySpinner = new JSpinner();
     private final JSpinner maxMemorySpinner = new JSpinner();
+    private final JFileChooser baseDirChooser = new JFileChooser();
+    private final JButton baseDirButton = new JButton(SharedLocale.tr("button.select"));
+    private final JLabel baseDirLabel = new JLabel(SharedLocale.tr("options.baseDirLabel"));
     private final FormPanel gameSettingsPanel = new FormPanel();
     private final JSpinner widthSpinner = new JSpinner();
     private final JSpinner heightSpinner = new JSpinner();
@@ -75,6 +78,8 @@ public class ConfigurationDialog extends JDialog {
 
         jvmRuntime.setSelectedItem(config.getJavaRuntime());
 
+        baseDirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
         setTitle(SharedLocale.tr("options.title"));
         initComponents(); // Must be called after jvmRuntime model setup
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -87,6 +92,7 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(maxMemorySpinner, "maxMemory");
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "windowHeight");
+        mapper.map(baseDirChooser, "baseDir");
 
         mapper.copyFromObject();
     }
@@ -98,6 +104,8 @@ public class ConfigurationDialog extends JDialog {
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.64BitJavaWarning")));
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.minMemory")), minMemorySpinner);
         javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.maxMemory")), maxMemorySpinner);
+        javaSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.baseDir")), baseDirButton);
+        javaSettingsPanel.addRow(baseDirLabel);
         SwingHelper.removeOpaqueness(javaSettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.javaTab"), SwingHelper.alignTabbedPane(javaSettingsPanel));
 
@@ -161,6 +169,13 @@ public class ConfigurationDialog extends JDialog {
                     model.insertElementAt(runtime, 0);
                     jvmRuntime.setSelectedItem(runtime);
                 }
+            }
+        });
+
+        baseDirButton.addActionListener(e -> {
+            int result = baseDirChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                System.out.println("Choosed - " + baseDirChooser.getSelectedFile().getAbsolutePath());
             }
         });
     }

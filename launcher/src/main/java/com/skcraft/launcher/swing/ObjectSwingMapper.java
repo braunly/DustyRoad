@@ -11,6 +11,7 @@ import lombok.NonNull;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -92,6 +93,23 @@ public class ObjectSwingMapper {
             @Override
             public void copyFromSwing() {
                 field.set(check.isSelected());
+            }
+        });
+    }
+
+    public void map(@NonNull final JFileChooser fileChooser, String name) {
+        final MutatorAccessorField<String> field = getField(name, String.class);
+
+        add(new FieldMapping() {
+            @Override
+            public void copyFromObject() {
+                fileChooser.setCurrentDirectory(new File(field.get() != null ? field.get() : "."));
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void copyFromSwing() {
+                field.set(Strings.emptyToNull(fileChooser.getSelectedFile().getAbsolutePath()));
             }
         });
     }
