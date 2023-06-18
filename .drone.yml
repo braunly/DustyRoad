@@ -5,16 +5,16 @@ name: default
 
 steps:
 - name: build launcher
-  image: eclipse-temurin:11
+  image: eclipse-temurin:17
   volumes:
-  - name: yabko_root
-    path: /tmp/yabko_root
+  - name: mc_root
+    path: /tmp/mc_root
   commands:
   - ./gradlew build
   - export version=$$(grep -oP "version = '\K[0-9\.]*" build.gradle)
   - cp launcher-builder/build/libs/launcher-builder-$${version}.jar modpack-builder.jar
-  - cp launcher-fancy/build/libs/launcher-fancy-$${version}.jar /tmp/yabko_root/launcher/versions/
-  - echo "{\"version\":\"$${version}\",\"url\":\"$${LAUNCHER_URL}launcher-fancy-$${version}.jar\"}" > /tmp/yabko_root/launcher/latest.json
+  - cp launcher-fancy/build/libs/launcher-fancy-$${version}.jar /tmp/mc_root/launcher/versions/
+  - echo "{\"version\":\"$${version}\",\"url\":\"$${LAUNCHER_URL}launcher-fancy-$${version}.jar\"}" > /tmp/mc_root/launcher/latest.json
   environment:
     LAUNCHER_URL:
       from_secret: launcher_url
@@ -31,9 +31,9 @@ volumes:
 - name: dockersock
   host:
     path: /var/run
-- name: yabko_root
+- name: mc_root
   host:
-    path: /data/yabko_root/www
+    path: /data/mc_root/www
 
 trigger:
   branch:
