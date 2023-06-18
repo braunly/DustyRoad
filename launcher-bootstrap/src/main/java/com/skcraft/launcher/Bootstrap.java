@@ -28,7 +28,7 @@ import static com.skcraft.launcher.bootstrap.SharedLocale.tr;
 @Log
 public class Bootstrap {
 
-    private static final int LEAF_VERSION = 1;
+    private static final int LEAF_VERSION = 2;
     private static final int BOOTSTRAP_VERSION = 1;
 
     @Getter private final File baseDir;
